@@ -79,8 +79,6 @@ func main() {
 	// Get time
 	t0 := time.Now()
 
-	// ch := tw.Traverse(rootDir)
-
 	// Display output using io.Reader interface
 	io.Copy(os.Stdout, format.NewReader(tw.Traverse(rootDir)))
 
