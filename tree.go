@@ -8,8 +8,8 @@ import (
 	"time"
 
 	// Custom packages
-	"tree/formatter"
-	"tree/walker"
+	"github.com/caelifer/tree/formatter"
+	"github.com/caelifer/tree/walker"
 )
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -5,7 +5,7 @@ import (
 	"io"
 
 	// Local packages
-	"tree/node"
+	"github.com/caelifer/tree/node"
 )
 
 ////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@ type FormatMode uint8
 
 const (
 	// Implemented
-	ShowFullPathMode FormatMode = 1<<iota
+	ShowFullPathMode FormatMode = 1 << iota
 	ShowPrefixMode
 	ShowDecorationMode
 	ShowSymlinkTargetMode
@@ -83,7 +83,7 @@ func (f *Formatter) Read(p []byte) (int, error) {
 
 	if err == nil {
 		// Add new line
-		n = copy(p, []byte(text + "\n"))
+		n = copy(p, []byte(text+"\n"))
 	}
 
 	return n, err
@@ -91,19 +91,19 @@ func (f *Formatter) Read(p []byte) (int, error) {
 
 // Getters
 func (f *Formatter) ShowFullPath() bool {
-	return f.mode & ShowFullPathMode != 0
+	return f.mode&ShowFullPathMode != 0
 }
 
 func (f *Formatter) ShowPrefix() bool {
-	return f.mode & ShowPrefixMode != 0
+	return f.mode&ShowPrefixMode != 0
 }
 
 func (f *Formatter) ShowDecoration() bool {
-	return f.mode & ShowDecorationMode != 0
+	return f.mode&ShowDecorationMode != 0
 }
 
 func (f *Formatter) ShowSymlinkTarget() bool {
-	return f.mode & ShowSymlinkTargetMode != 0
+	return f.mode&ShowSymlinkTargetMode != 0
 }
 
 // Setters
