@@ -66,11 +66,11 @@ func (tw *TreeWalker) filter(nodes []os.FileInfo) []os.FileInfo {
 
 	// Filter nodes based on the custom filters
 	for _, node := range nodes {
-		valid := true // assume node is valid
+		var valid bool
 		for _, fn := range tw.outputFilterChain {
 			// Check if filter is tripped
-			if !fn(node) {
-				valid = false
+			valid = fn(node)
+			if !valid {
 				break
 			}
 		}
