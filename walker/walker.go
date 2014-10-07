@@ -68,7 +68,6 @@ func (tw *TreeWalker) filter(nodes []os.FileInfo) []os.FileInfo {
 		valid := true // Default - true
 		for _, fn := range tw.outputFilterChain {
 			// Check if filter is tripped
-			log.Printf("Applying filter %+v for node: %s\n", fn, node.Name())
 			valid = fn(node)
 			if !valid {
 				break
