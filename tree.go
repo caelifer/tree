@@ -41,7 +41,7 @@ func main() {
 	// Add custom output filters
 	if !*showHidden {
 		// Hide nodes starting with '.'
-		tw.AddFilter(func(info os.FileInfo) bool { return []byte(info.Name())[0] != '.' })
+		tw.AddFilter(func(info os.FileInfo) bool { return []rune(info.Name())[0] != '.' })
 	}
 
 	if *showOnlyDirs {
