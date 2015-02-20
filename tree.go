@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"time"
 
@@ -23,6 +24,7 @@ var (
 	showRelativePath = flag.Bool("f", false, "show relative paths")
 	hidePrefix       = flag.Bool("i", false, "do not show indentation lines")
 	hideCount        = flag.Bool("noreport", false, "do not display file and directory counts")
+	output           = flag.String("output", "-", "stdout|stderr|file - default stdout (-)")
 )
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,24 +81,41 @@ func main() {
 	// Get time
 	t0 := time.Now()
 
-	// Display output using io.Reader interface
-	io.Copy(os.Stdout, format.NewReader(tw.Traverse(rootDir)))
+	// Capture outputter in the function literal
+	puts := func(w io.Writer, root string) {
+		// Display output using io.Reader interface
+		io.Copy(w, format.NewReader(tw.Traverse(root)))
 
-	// Display node count
-	if !*hideCount {
-		dcnt, fcnt := tw.GetCounts()
-		fmt.Printf("\n%d directories", dcnt)
+		// Display node count
+		if !*hideCount {
+			dcnt, fcnt := tw.GetCounts()
+			fmt.Fprintf(w, "\n%d directories", dcnt)
 
-		// Only display file count if not zero
-		if fcnt > 0 {
-			fmt.Printf(", %d files", fcnt)
+			// Only display file count if not zero
+			if fcnt > 0 {
+				fmt.Fprintf(w, ", %d files", fcnt)
+			}
+
+			if os.Getenv("DEBUG") != "" {
+				fmt.Fprintf(w, " [%s]", time.Since(t0))
+			}
+
+			fmt.Fprintf(w, "\n")
 		}
-
-		if os.Getenv("DEBUG") != "" {
-			fmt.Printf(" [%s]", time.Since(t0))
+	}
+	// Select output writer
+	switch *output {
+	case "stdout", "-":
+		puts(os.Stdout, rootDir)
+	case "stderr":
+		puts(os.Stderr, rootDir)
+	default:
+		if out, err := os.OpenFile(*output, os.O_CREATE|os.O_WRONLY, 0666); err == nil {
+			defer out.Close()
+			puts(out, rootDir)
+		} else {
+			log.Fatal(err)
 		}
-
-		fmt.Printf("\n")
 	}
 }
 
