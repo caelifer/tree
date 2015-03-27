@@ -17,6 +17,7 @@ const (
 	ShowPrefixMode
 	ShowDecorationMode
 	ShowSymlinkTargetMode
+	ShowHashChecksum
 
 	// Future features
 	ShowUserGroupMode
@@ -46,10 +47,15 @@ func (f *Formatter) Next() (string, error) {
 		text = n.Name()
 
 		// ------------ Prepends ------------
+		// Show SHA1 checksum
+		if f.ShowHash() {
+			text = n.Checksum()
+		}
+
 
 		// Show relative path
 		if f.ShowFullPath() {
-			text = n.FullPath()
+			text += " " + n.FullPath()
 		}
 
 		// Show prefixes and marking
@@ -106,6 +112,10 @@ func (f *Formatter) ShowSymlinkTarget() bool {
 	return f.mode&ShowSymlinkTargetMode != 0
 }
 
+func (f *Formatter) ShowHash() bool {
+	return f.mode&ShowHashChecksum != 0
+}
+
 // Setters
 func (f *Formatter) SetShowFullPath(cond bool) {
 	if cond {
@@ -146,6 +156,19 @@ func (f *Formatter) SetShowSymlinkTarget(cond bool) {
 		f.mode &^= ShowSymlinkTargetMode
 	}
 }
+
+// Display SHA1 checksum for regular file
+func (f *Formatter) SetShowHash(cond bool) {
+	if cond {
+		// Set bit
+		f.mode |= ShowHashChecksum
+	} else {
+		// Unset
+		f.mode &^= ShowHashChecksum
+	}
+	
+}
+
 
 // Reader wrapper
 func (f *Formatter) NewReader(in <-chan *node.Node) io.Reader {

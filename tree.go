@@ -23,6 +23,7 @@ var (
 	showRelativePath = flag.Bool("f", false, "show relative paths")
 	hidePrefix       = flag.Bool("i", false, "do not show indentation lines")
 	hideCount        = flag.Bool("noreport", false, "do not display file and directory counts")
+	showHash         = flag.Bool("checksum", false, "print SHA1 checksum for files")
 )
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,8 +53,20 @@ func main() {
 	// ----------------------------------------------------------
 	// ------------------ Set formatting rules ------------------
 	// ----------------------------------------------------------
+
+	// Show SHA1 checksum - special case
+	if (*showHash) {
+
+		// Explicitely modify formatting rules
+		*showRelativePath = true
+		*hidePrefix = true
+	}
+
 	// Create our formatter and set display rules
 	format := formatter.NewFormatter()
+
+	// Show SHA1 hash
+	format.SetShowHash(*showHash)
 
 	// Full path?
 	format.SetShowFullPath(*showRelativePath)
@@ -66,6 +79,7 @@ func main() {
 
 	// Show symlink target?
 	format.SetShowSymlinkTarget(true)
+
 
 	// ----------------------------------------------------------
 	// Start processing on the background and get the channel back
