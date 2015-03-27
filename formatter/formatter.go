@@ -17,7 +17,7 @@ const (
 	ShowPrefixMode
 	ShowDecorationMode
 	ShowSymlinkTargetMode
-	ShowHashChecksum
+	ShowHashChecksumMode
 
 	// Future features
 	ShowUserGroupMode
@@ -113,7 +113,7 @@ func (f *Formatter) ShowSymlinkTarget() bool {
 }
 
 func (f *Formatter) ShowHash() bool {
-	return f.mode&ShowHashChecksum != 0
+	return f.mode&ShowHashChecksumMode != 0
 }
 
 // Setters
@@ -161,10 +161,10 @@ func (f *Formatter) SetShowSymlinkTarget(cond bool) {
 func (f *Formatter) SetShowHash(cond bool) {
 	if cond {
 		// Set bit
-		f.mode |= ShowHashChecksum
+		f.mode |= ShowHashChecksumMode
 	} else {
 		// Unset
-		f.mode &^= ShowHashChecksum
+		f.mode &^= ShowHashChecksumMode
 	}
 	
 }
