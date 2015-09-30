@@ -57,7 +57,7 @@ func main() {
 	// ----------------------------------------------------------
 
 	// Show SHA1 checksum - special case
-	if (*showHash) {
+	if *showHash {
 
 		// Explicitely modify formatting rules
 		*showRelativePath = true
