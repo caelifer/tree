@@ -82,7 +82,6 @@ func main() {
 	// Show symlink target?
 	format.SetShowSymlinkTarget(true)
 
-
 	// ----------------------------------------------------------
 	// Start processing on the background and get the channel back
 	// ----------------------------------------------------------

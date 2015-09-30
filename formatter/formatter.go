@@ -49,6 +49,10 @@ func (f *Formatter) Next() (string, error) {
 		// ------------ Prepends ------------
 		// Show SHA1 checksum
 		if f.ShowHash() {
+			// Only process file entries and skip directories
+			if n.IsDir() {
+				return "", nil
+			}
 			text = n.Checksum()
 		}
 
@@ -89,7 +93,9 @@ func (f *Formatter) Read(p []byte) (int, error) {
 
 	if err == nil {
 		// Add new line
-		n = copy(p, []byte(text+"\n"))
+		if text != "" {
+			n = copy(p, []byte(text+"\n"))
+		}
 	}
 
 	return n, err
@@ -166,7 +172,6 @@ func (f *Formatter) SetShowHash(cond bool) {
 		// Unset
 		f.mode &^= ShowHashChecksumMode
 	}
-	
 }
 
 
