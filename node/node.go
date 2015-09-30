@@ -148,7 +148,7 @@ func (n *Node) IsDir() bool {
 }
 
 func (n *Node) IsRegular() bool {
-	return n.info.IsRegular()
+	return n.info.Mode().IsRegular()
 }
 
 func (n *Node) IsSymlink() bool {
