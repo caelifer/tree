@@ -49,11 +49,12 @@ func (f *Formatter) Next() (string, error) {
 		// ------------ Prepends ------------
 		// Show SHA1 checksum
 		if f.ShowHash() {
-			// Only process file entries and skip directories
-			if n.IsDir() {
+			// Only process file entries and skip directories and other types
+			if n.IsRegular() {
+				text = n.Checksum()
+			} else {
 				return "", nil
 			}
-			text = n.Checksum()
 		}
 
 
