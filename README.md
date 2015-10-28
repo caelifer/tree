@@ -21,7 +21,7 @@ Usage of tree:
 ```
 # Examples
 
-By default, `tree` will examin current directory. Here is a sample output.
+By default, `tree` will examine current directory. Here is a sample output.
 ```
 $ tree
 .
