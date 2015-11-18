@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -25,7 +26,7 @@ var (
 	hidePrefix       = flag.Bool("i", false, "do not show indentation lines")
 	hideCount        = flag.Bool("noreport", false, "do not display file and directory counts")
 	showHash         = flag.Bool("checksum", false, "print SHA1 checksum for files")
-	output           = flag.String("output", "-", "stdout|stderr|file - default stdout (-)")
+	output           = flag.String("o", "-", "stdout(-)|stderr|/dev/null|file")
 )
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -122,6 +123,9 @@ func main() {
 		puts(os.Stdout, rootDir)
 	case "stderr":
 		puts(os.Stderr, rootDir)
+	case "/dev/null":
+		// Be nice to Windows sufferers
+		puts(ioutil.Discard, rootDir)
 	default:
 		if out, err := os.OpenFile(*output, os.O_CREATE|os.O_WRONLY, 0666); err == nil {
 			defer out.Close()
