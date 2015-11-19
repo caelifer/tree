@@ -12,12 +12,17 @@ go get github.com/caelifer/tree
 ```
 $ tree -h
 Usage of tree:
-  -F=false: show decorations like 'ls -F'
-  -a=false: show hidden files
-  -d=false: only show directories
-  -f=false: show relative paths
-  -i=false: do not show indentation lines
-  -noreport=false: do not display file and directory counts
+  -F	show decorations like 'ls -F'
+  -a	show hidden files
+  -checksum
+    	print SHA1 checksum for files
+  -d	only show directories
+  -f	show relative paths
+  -i	do not show indentation lines
+  -noreport
+    	do not display file and directory counts
+  -o string
+    	stdout(-)|stderr|/dev/null|file (default "-")
 ```
 # Examples
 
