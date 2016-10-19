@@ -45,22 +45,21 @@ func (f *Formatter) Next() (string, error) {
 
 		// Transform and format n.Node output
 		text = n.Name()
+		// Show relative path
+		if f.ShowFullPath() {
+			text = n.FullPath()
+		}
 
 		// ------------ Prepends ------------
 		// Show SHA1 checksum
 		if f.ShowHash() {
 			// Only process file entries and skip directories and other types
 			if n.IsRegular() {
-				text = n.Checksum()
+				// Prepend checksum to output
+				text = n.Checksum() + " " + text
 			} else {
 				return "", nil
 			}
-		}
-
-
-		// Show relative path
-		if f.ShowFullPath() {
-			text += " " + n.FullPath()
 		}
 
 		// Show prefixes and marking
@@ -174,7 +173,6 @@ func (f *Formatter) SetShowHash(cond bool) {
 		f.mode &^= ShowHashChecksumMode
 	}
 }
-
 
 // Reader wrapper
 func (f *Formatter) NewReader(in <-chan *node.Node) io.Reader {
