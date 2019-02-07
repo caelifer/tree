@@ -28,10 +28,7 @@ type TreeWalker struct {
 
 // Constructor. Returns pointer to the TreeWalker object.
 func NewTreeWalker() *TreeWalker {
-	out := make(chan *node.Node)
-	return &TreeWalker{
-		output: out,
-	}
+	return &TreeWalker{}
 }
 
 // Adds client-provided filter function, that takes an os.FileInfo object as an argument and returns bool,
@@ -49,6 +46,7 @@ func (tw *TreeWalker) GetCounts() (uint, uint) {
 // Main interface to the TreeWalker service. Starts depth-first traversal of the file system from the provided
 // root directory (dir). Returns a receive-only *Node communication channel for all found valid nodes.
 func (tw *TreeWalker) Traverse(dir string) <-chan *node.Node {
+	tw.output = make(chan *node.Node)
 	// Process the tree, treating dir as root node
 	go tw.walk(dir, "", true)
 
@@ -86,12 +84,10 @@ func (tw *TreeWalker) filter(nodes []os.FileInfo) []os.FileInfo {
 func (tw *TreeWalker) emit(n *node.Node) {
 	// Update dir and file counters first. No need to lock up since TreeWalker operations are
 	// running a separate gorutine.
-	if !n.IsRoot() {
-		if n.IsDir() {
-			tw.counter.ndirs++
-		} else {
-			tw.counter.nfiles++
-		}
+	if n.IsDir() {
+		tw.counter.ndirs++
+	} else {
+		tw.counter.nfiles++
 	}
 	tw.output <- n
 }
@@ -105,7 +101,7 @@ func (tw *TreeWalker) walk(dir, prefix string, isRoot bool) {
 		if info, err := os.Lstat(dir); err == nil {
 			tw.processNode(dir, "", "", node.RootNodeMode, info, false)
 		} else {
-			log.Printf("WARN: failed to %s\n", err)
+			log.Printf("WARN: failed to %v\n", err)
 		}
 	} else { // Process the rest of the nodes - recursive clause
 

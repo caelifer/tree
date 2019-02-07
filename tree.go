@@ -87,19 +87,23 @@ func main() {
 	// Start processing on the background and get the channel back
 	// ----------------------------------------------------------
 	// Figure out what directory to traverse
-	rootDir := "." // Default - current directory
-	if args := flag.Args(); len(args) > 0 {
-		rootDir = args[0] // ... or first command line argument
+	args := append([]string{}, flag.Args()...)
+	if len(args) < 1 {
+		args = []string{"."} // Default is a current directory
 	}
 
 	// Get time
 	t0 := time.Now()
 
 	// Capture outputter in the function literal
-	puts := func(w io.Writer, root string) {
-		// Display output using io.Reader interface
-		io.Copy(w, format.NewReader(tw.Traverse(root)))
-
+	puts := func(w io.Writer, roots []string) {
+		for i, root := range roots {
+			if i > 0 {
+				fmt.Fprintf(w, "\n")
+			}
+			// Traverse all provided roots
+			io.Copy(w, format.NewReader(tw.Traverse(root)))
+		}
 		// Display node count
 		if !*hideCount {
 			dcnt, fcnt := tw.GetCounts()
@@ -120,16 +124,16 @@ func main() {
 	// Select output writer
 	switch *output {
 	case "stdout", "-":
-		puts(os.Stdout, rootDir)
+		puts(os.Stdout, args)
 	case "stderr":
-		puts(os.Stderr, rootDir)
+		puts(os.Stderr, args)
 	case "/dev/null":
 		// Be nice to Windows sufferers
-		puts(ioutil.Discard, rootDir)
+		puts(ioutil.Discard, args)
 	default:
 		if out, err := os.OpenFile(*output, os.O_CREATE|os.O_WRONLY, 0666); err == nil {
 			defer out.Close()
-			puts(out, rootDir)
+			puts(out, args)
 		} else {
 			log.Fatal(err)
 		}
