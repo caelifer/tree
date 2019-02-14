@@ -38,10 +38,10 @@ func (n *Node) String() string {
 func (n *Node) Mark() string {
 	mark := ""
 	if !n.IsRoot() {
-		mark = "├➢  "
+		mark = "├─➤ "
 		if n.IsLast() {
 			// last node in directory
-			mark = "└➢  "
+			mark = "└─➤ "
 		}
 	}
 	return mark
@@ -99,9 +99,10 @@ func (n *Node) SymlinkTarget() string {
 	if n.IsSymlink() {
 		lpath := n.FullPath()
 		if rpath, err := os.Readlink(lpath); err == nil {
+			rpath = "[" + rpath + "]"
 			// Check if target is valid
 			if _, err := os.Stat(lpath); err != nil {
-				rpath += " [bad link]"
+				rpath += " (bad link)"
 			}
 			return rpath
 		}

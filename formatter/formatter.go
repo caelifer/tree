@@ -78,7 +78,7 @@ func (f *Formatter) Next() (string, error) {
 		// Show symlink target
 		if f.ShowSymlinkTarget() {
 			if n.IsSymlink() {
-				text += " ⇢ " + n.SymlinkTarget()
+				text += " » " + n.SymlinkTarget()
 			}
 		}
 	}
