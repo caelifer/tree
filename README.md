@@ -5,7 +5,7 @@ tree [![Go Report Card](https://goreportcard.com/badge/github.com/caelifer/tree)
 
 # Installation
 ```
-go get github.com/caelifer/tree
+go install github.com/caelifer/tree@latest
 ```
 
 # Usage
