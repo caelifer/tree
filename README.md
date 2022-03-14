@@ -1,7 +1,7 @@
 tree [![Go Report Card](https://goreportcard.com/badge/github.com/caelifer/tree)](https://goreportcard.com/report/github.com/caelifer/tree)
 ====
 
-`tree` is a re-implementation of tree Linux utility using Go language. This implementation tries to be a Go-idiomatic. Only subset of features is implemented. Noticable absence is no ability to output in HTML format. The implementation might be a bit less efficient then C-based, as it always does lstat(2) on each directory or file node processed.
+`tree` is a re-implementation of tree Linux utility using Go language. This implementation tries to be a Go-idiomatic. Only subset of features are implemented. Noticable absence is no ability to output in HTML format. The implementation might be a bit less efficient then C-based, as it always does lstat(2) on each directory or file node processed.
 
 # Installation
 ```
