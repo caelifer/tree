@@ -95,14 +95,16 @@ func main() {
 	// Get time
 	t0 := time.Now()
 
-	// Capture outputter in the function literal
+	// Capture output writer in the function literal
 	puts := func(w io.Writer, roots []string) {
 		for i, root := range roots {
 			if i > 0 {
 				fmt.Fprintf(w, "\n")
 			}
 			// Traverse all provided roots
-			io.Copy(w, format.NewReader(tw.Traverse(root)))
+			if _, err := io.Copy(w, format.NewReader(tw.Traverse(root))); err != nil {
+				log.Fatalf("Failed to write to output: %v", err)
+			}
 		}
 		// Display node count
 		if !*hideCount {

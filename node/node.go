@@ -38,10 +38,10 @@ func (n *Node) String() string {
 func (n *Node) Mark() string {
 	mark := ""
 	if !n.IsRoot() {
-		mark = "├─➤ "
+		mark = "├─▻ "
 		if n.IsLast() {
 			// last node in directory
-			mark = "└─➤ "
+			mark = "└─▻ "
 		}
 	}
 	return mark
