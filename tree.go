@@ -46,7 +46,7 @@ func main() {
 	// Add custom output filters
 	if !*showHidden {
 		// Hide nodes starting with '.'
-		tw.AddFilter(func(info os.FileInfo) bool { return strings.HasPrefix(info.Name(), ".") })
+		tw.AddFilter(func(info os.FileInfo) bool { return !strings.HasPrefix(info.Name(), ".") })
 	}
 
 	if *showOnlyDirs {
