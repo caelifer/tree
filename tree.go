@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -15,9 +14,9 @@ import (
 	"github.com/caelifer/tree/walker"
 )
 
-////////////////////////////////////////////////////////////////////////////////
+// ------------------------------------------------------------------------------
 // Globals
-////////////////////////////////////////////////////////////////////////////////
+// ------------------------------------------------------------------------------
 // Command line options
 var (
 	showHidden       = flag.Bool("a", false, "show hidden files")
@@ -30,9 +29,9 @@ var (
 	output           = flag.String("o", "-", "stdout(-)|stderr|/dev/null|file")
 )
 
-////////////////////////////////////////////////////////////////////////////////
+// ------------------------------------------------------------------------------
 // Start the program
-////////////////////////////////////////////////////////////////////////////////
+// ------------------------------------------------------------------------------
 func main() {
 	// Parse command line options and parameters
 	flag.Parse()
@@ -132,7 +131,7 @@ func main() {
 		puts(os.Stderr, args)
 	case "/dev/null":
 		// Be nice to Windows sufferers
-		puts(ioutil.Discard, args)
+		puts(io.Discard, args)
 	default:
 		if out, err := os.OpenFile(*output, os.O_CREATE|os.O_WRONLY, 0666); err == nil {
 			defer out.Close()
